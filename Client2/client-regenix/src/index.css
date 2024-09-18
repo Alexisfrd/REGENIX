@@ -1,0 +1,10 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+.filter-white {
+    filter: brightness(0) invert(1);
+  }
+  body {
+    @apply font-mono;
+  }
