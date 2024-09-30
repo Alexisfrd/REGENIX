@@ -280,8 +280,8 @@ function run_express() {
  * localhost => rabbitmq
  */
 function run() {
-    //const IP = process.env.IP || "localhost";
-    const IP = process.env.IP || "rabbitmq";
+    const IP = process.env.IP || "localhost";
+    //const IP = process.env.IP || "rabbitmq";
     const username = process.env.user || 'guest';
     const password = process.env.password || 'guest';
     const opt = { credentials: require('amqplib').credentials.plain(username, password) };
