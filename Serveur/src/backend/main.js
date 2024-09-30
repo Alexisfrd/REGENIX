@@ -277,8 +277,10 @@ function run_express() {
 
 /**
  * Define the main function for main module
+ * localhost => rabbitmq
  */
 function run() {
+    //const IP = process.env.IP || "localhost";
     const IP = process.env.IP || "rabbitmq";
     const username = process.env.user || 'guest';
     const password = process.env.password || 'guest';
