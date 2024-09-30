@@ -4,7 +4,7 @@ powershell -ExecutionPolicy Bypass -File "launch_docker.ps1"
 timeout /T 10
 
 echo Lancement du front-end sur le port 3001...
-cd C:\Users\hello\Documents\REGENIX\Client2\client-regenix
+cd D:\OneDrive - ESEO\Eseo\canada\Regenix\Application\REGENIX\Client2\client-regenix
 set PORT=3001
 start /B npm run start
 
@@ -17,7 +17,7 @@ start /B docker run --rm --name redis -p 6379:6379 redis --timeout 0
 timeout /T 10
 
 echo Lancement de PM2 avec ecosystem.config.js...
-cd C:\Users\hello\Documents\REGENIX\Serveur
+cd D:\OneDrive - ESEO\Eseo\canada\Regenix\Application\REGENIX\Serveur
 start /B pm2 start ecosystem.config.js
 
 echo Lancement de du serveur http pour stocker csv...

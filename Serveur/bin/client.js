@@ -1,8 +1,5 @@
 const axios = require('axios');
-const { SerialPort } = require('serialport');
-const { ReadlineParser } = require('@serialport/parser-readline');
 const moment = require('moment-timezone');
-
 
 let derniereDate = null; // Initialisation de derniereDate
 
@@ -39,37 +36,26 @@ function handleLoginAndSendData(sensorName, sensorValue, dateString, login, pass
     });
 }
 
-// Configuration du port série
-const port = new SerialPort({
-    path: 'COM3',
-    baudRate: 115200
-});
+// Fonction pour générer des valeurs aléatoires
+function generateRandomData() {
+    const doValue = parseFloat((Math.random() * 10).toFixed(2));
+    const phValue = parseFloat((Math.random() * 14).toFixed(2));
+    const tempValue = parseFloat((Math.random() * 40).toFixed(2));
+    const debitValue = parseFloat((Math.random() * 100).toFixed(2));
+    let date = moment().tz('America/Toronto');
+    date.set({ millisecond: 0 });
+    let dateString = date.format('YYYY-MM-DDTHH:mm:ss');
 
-const parser = port.pipe(new ReadlineParser({ delimiter: '\n' }));
-console.log('Listening on port COM3');
-parser.on('data', (data) => {
-    //data
-    console.log(data);
-    const regex = /DO:\s*([\d.]+),\s*pH:\s*([\d.]+),\s*Temperature:\s*([\d.]+),\s*debit:\s*([\d.]+)/;
-    const match = data.match(regex);
+    if (derniereDate !== dateString) {
+        derniereDate = dateString;
 
-    if (match) {
-        const doValue = parseFloat(match[1]);
-        const phValue = parseFloat(match[2]);
-        const tempValue = parseFloat(match[3]);
-        const debitValue = parseFloat(match[4]);
-        let date = moment().tz('America/Toronto');
-        date.set({ millisecond: 0 });
-        let dateString = date.format('YYYY-MM-DDTHH:mm:ss');
-
-        if (derniereDate !== dateString) {
-            derniereDate = dateString;
-
-            // Envoyer les données pour les trois sondes
-            handleLoginAndSendData("DO", doValue, dateString, "DO", "pass",0);
-            handleLoginAndSendData("PH", phValue, dateString, "PH", "pass1",1);
-            handleLoginAndSendData("TEMP", tempValue, dateString, "TEMP", "pass2",2);
-            handleLoginAndSendData("DEBIT", debitValue, dateString, "DEBIT", "pass3", 3);
-        }
+        // Envoyer les données pour les trois sondes
+        handleLoginAndSendData("DO", doValue, dateString, "DO", "pass", 0);
+        handleLoginAndSendData("PH", phValue, dateString, "PH", "pass1", 1);
+        handleLoginAndSendData("TEMP", tempValue, dateString, "TEMP", "pass2", 2);
+        handleLoginAndSendData("DEBIT", debitValue, dateString, "DEBIT", "pass3", 3);
     }
-});
+}
+
+// Appeler generateRandomData toutes les 5 secondes
+setInterval(generateRandomData, 1000);

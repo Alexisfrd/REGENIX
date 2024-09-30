@@ -136,13 +136,13 @@ function pull(req, res) {
 }
 
 // Chemin complet vers l'exécutable PM2
-const pm2Path = 'C:\\Users\\Hello\\AppData\\Roaming\\npm\\pm2.cmd'; // Remplacez par le chemin correct
+//const pm2Path = 'C:\\Users\\alexi\\AppData\\Roaming\\npm\\pm2.cmd'; // Remplacez par le chemin correct
 
 function startCulture(req, res) {
     const { script, args } = req.body;
     const scriptPath = path.resolve(__dirname, script);
     const argsString = args.join(' ');
-    const command = `"${pm2Path}" start "${scriptPath}" -f -- ${argsString}`;
+    const command = `"pm2 start "${scriptPath}" -f -- ${argsString}`;
 
     exec(command, { windowsHide: true }, (error, stdout, stderr) => {
         if (error || stderr) {
@@ -182,9 +182,9 @@ function killCulture(req, res) {
 
     res.sendStatus(200);
 }
-
+/*
 function exportCsv(req, res) {
-    const csvDirectory = 'C:\\Users\\hello\\Documents\\REGENIX\\Serveur\\csv\\brut'; // Remplacez par le chemin réel de votre répertoire CSV
+    const csvDirectory = '\Serveur\csv\brut'; // Remplacez par le chemin réel de votre répertoire CSV
 
     exec(`explorer "${csvDirectory}"`, { windowsHide: true }, (error, stdout, stderr) => {
         if (error) {
@@ -199,7 +199,7 @@ function exportCsv(req, res) {
         res.sendStatus(200);
     });
 }
-
+*/
 /**
  * Run express application (routes and listen)
  */
@@ -261,11 +261,11 @@ function run_express() {
             res.sendStatus(500);
         }
     });
-
+/*
     app.post('/exportCsv', (req, res) => {
         exportCsv(req, res);
     });
-
+*/
     app.get("/*", (req, res) => {
         res.sendStatus(404);
     });
@@ -279,7 +279,7 @@ function run_express() {
  * Define the main function for main module
  */
 function run() {
-    const IP = process.env.IP || "127.0.0.1";
+    const IP = process.env.IP || "rabbitmq";
     const username = process.env.user || 'guest';
     const password = process.env.password || 'guest';
     const opt = { credentials: require('amqplib').credentials.plain(username, password) };
